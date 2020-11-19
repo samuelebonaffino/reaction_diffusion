@@ -1,6 +1,6 @@
 #ifdef GL_ES
-precision mediump float;
-precision mediump int;
+precision highp float;
+precision highp int;
 #endif
 
 #define PROCESSING_TEXTURE_SHADER
@@ -18,8 +18,14 @@ uniform float dB;
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
 
+// void initializeGrid()
+
 void main(void)
 {
+    // // Initialize grid at the beginning
+    // if(u_init)
+    //     initializeGrid();
+
     // Retrieve spatial coordinate from the eight vertex surrounding the current one
     vec2 tc0 = vertTexCoord.st + vec2(-texOffset.s,  -texOffset.t);
     vec2 tc1 = vertTexCoord.st + vec2(         0.0,  -texOffset.t);
@@ -45,9 +51,9 @@ void main(void)
     // Use (R,G) channels to store (A,B) agents
     vec2 uv = texture2D(texture, tc4.st).rg;
     // Calculate laplacian
-    vec4 lapl = (.05 * col0 + .2  * col1  + .05 * col2  +
-                 .2  * col3 - 1.0 * col4  + .2  * col5  +
-                 .05 * col6 + .2  * col7  + .05 * col8);
+    vec4 lapl = (.05 * col0 + .2  * col1 + .05 * col2  +
+                 .2  * col3 - 1.0 * col4 + .2  * col5  +
+                 .05 * col6 + .2  * col7 + .05 * col8) ;
 
     float rate = uv.r * uv.g * uv.g;
     float du = dA * lapl.r - rate + f * (1.0 - uv.r);
