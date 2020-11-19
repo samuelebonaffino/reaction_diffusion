@@ -18,14 +18,13 @@ uniform float dB;
 varying vec4 vertColor;
 varying vec4 vertTexCoord;
 
-// void initializeGrid()
+float map(float value, float min1, float max1, float min2, float max2) 
+{
+  return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
 
 void main(void)
 {
-    // // Initialize grid at the beginning
-    // if(u_init)
-    //     initializeGrid();
-
     // Retrieve spatial coordinate from the eight vertex surrounding the current one
     vec2 tc0 = vertTexCoord.st + vec2(-texOffset.s,  -texOffset.t);
     vec2 tc1 = vertTexCoord.st + vec2(         0.0,  -texOffset.t);
@@ -55,6 +54,8 @@ void main(void)
                  .2  * col3 - 1.0 * col4 + .2  * col5  +
                  .05 * col6 + .2  * col7 + .05 * col8) ;
 
+    // float kk = map(tc4.x, 0.0, 1.0, 0.045, 0.07);
+    // float ff = map(tc4.y, 0.0, 1.0, 0.01, 0.1);
     float rate = uv.r * uv.g * uv.g;
     float du = dA * lapl.r - rate + f * (1.0 - uv.r);
     float dv = dB * lapl.g + rate - (f + k) * uv.g;
